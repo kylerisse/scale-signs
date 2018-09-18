@@ -1,0 +1,6 @@
+function loadSponsorImages() {
+    let imgAllSponsors = [];
+    {{ range . }}
+    imgAllSponsors.push(loadImage("/img/sponsors/{{ . }}"));{{ end }}
+    return imgAllSponsors
+}
