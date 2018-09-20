@@ -10,7 +10,7 @@ import (
 
 type schedule []schedulable
 
-func InitSchedule(s string) *schedule {
+func newSchedule(s string) *schedule {
 	var sch schedule
 	resp, err := http.Get(s)
 	if err != nil {

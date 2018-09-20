@@ -1,21 +1,17 @@
+var sponsorImageList = [];
+var sponsorImages = [];
 
-class Sponsors {
+function loadSponsorImages() {
+    loadJSON("/api/sponsors/images", function(list) {
+        sponsorImageList = list;
+    });
+} 
 
-    constructor() {
-        this.images = [];
-    }
-
-    loadSponsorImages() {
-        loadJSON("/api/sponsors/images", function(list) {
-            console.log("test");
-            this.images = list;
-        });
-        console.log(this.images);
-        console.log(this.images[0]);
-        for (let i = 0; i < this.images; i++) {
-            console.log("/img/sponsors/" + this.images[0]);
-            this.images.push(loadImage("/img/sponsors/" + this.images[i]));
+function addSponsorImage(string) {
+    if (sponsorImageList.length != sponsorImages.length) {
+        sponsorImages = [];
+        for (let i = 0; i < sponsorImageList.length; i++) {
+            sponsorImages.push(loadImage("/img/sponsors/" + sponsorImageList[i]));
         }
-    } 
-
+    }
 }
