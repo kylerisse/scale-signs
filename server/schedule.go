@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"encoding/xml"
@@ -10,7 +10,7 @@ import (
 
 type schedule []schedulable
 
-func initSchedule(s string) *schedule {
+func InitSchedule(s string) *schedule {
 	var sch schedule
 	resp, err := http.Get(s)
 	if err != nil {
