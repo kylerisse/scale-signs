@@ -8,33 +8,36 @@ var testCounter = 0;
 
 
 function setup() {
-
     frameRate(30);
     noCursor();
-    createCanvas(screen.width, screen.height);
+
+    createCanvas(windowWidth, windowHeight);
 
     imgLogo = loadImage("/img/logo-17x.png");
     imgWifi = loadImage("/img/wifi.png");
     imgMap = loadImage("/img/convention-center-map.png");
-    
     loadSponsorImages();
 
     clientState = "READY";
-
 }
 
 function draw() {
     update();
     if (clientState === "READY") {
         background(255);
-        imageMode(CENTER)
+        imageMode(CENTER);
         image(imgLogo, 190, 100);
-        image(imgWifi, screen.width - 200, 100)
+        image(imgWifi, windowWidth - 200, 100);
     }
     if (sponsorImages.length > 1) {
-        image(sponsorImages[testInt], screen.width - 130, screen.height - 115);
-        image(sponsorImages[testInt - 1], 130, screen.height - 115);
+        image(sponsorImages[testInt], windowWidth - 130, windowHeight - 115);
+        image(sponsorImages[testInt - 1], 130, windowHeight - 115);
     }
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+    centerCanvas();
 }
 
 function update() {
