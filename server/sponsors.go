@@ -14,14 +14,16 @@ func newSponsors(imagePath string) *sponsors {
 	sp := imagePath + "/sponsors"
 	files, err := ioutil.ReadDir(sp)
 	if err != nil {
-		log.Println("cannot read " + sp)
+		log.Println("cannot read", sp)
 	}
 	for _, file := range files {
 		s = append(s, file.Name())
+		log.Println("add sponsor", file.Name())
 	}
 	return &s
 }
 
 func (s *sponsors) handleSponsorImageList(w http.ResponseWriter, req *http.Request) {
+	log.Println("handleSponsorImageList", req.RemoteAddr, req.Header)
 	json.NewEncoder(w).Encode(s)
 }

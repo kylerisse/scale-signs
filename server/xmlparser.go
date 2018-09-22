@@ -9,12 +9,15 @@ import (
 	"time"
 )
 
-type Nodes struct {
-	all []Node `xml:"Nodes"`
+type xmlParser []XMLNode
+
+// XMLNodes <nodes> top level document
+type XMLNodes struct {
+	All []XMLNode `xml:"node"`
 }
 
-// Node <node> from the upstream XML, pre cleanup
-type Node struct {
+// XMLNode <node> from the upstream XML, pre cleanup
+type XMLNode struct {
 	Title         string `xml:"Title"`
 	Room          string `xml:"Room"`
 	Day           string `xml:"Day"`
@@ -27,44 +30,54 @@ type Node struct {
 	Path          string `xml:"Path"`
 }
 
-func fetchXMLNodes(url string) Nodes {
+func createXMLParser(url string) *xmlParser {
+	var xp xmlParser
+	//nodes := fetchXMLNodes(url)
+	//fmt.Println(nodes)
+	return &xp
+}
+
+func (xp *xmlParser) toPresentations() []presentation {
+	var ps []presentation
+	/*for i := 0; i < .length; i++ {
+		ps.append(ps, xp[i].toPresentation())
+	}*/
+	return ps
+
+}
+
+func (n *XMLNode) toPresentation() presentation {
+	var p presentation
+	p.name = n.Title
+	p.description = removeHTMLTags(n.ShortAbstract)
+	p.location = n.Room
+	p.startTime = extractStartTime(n.Day)
+	p.endTime = extractEndTime(n.Day)
+	p.speakers = extractSpeakers(n.Speakers)
+	p.audience = "Everyone"
+	p.topic = n.Topic
+	return p
+}
+
+func fetchXMLNodes(url string) []XMLNode {
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Println("cannot get " + url)
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
+	//log.Println("fetch", url)
+	//log.Println(resp.Status, resp.Header)
 	if err != nil {
 		log.Println("cannot read XML response body " + url)
 	}
-	var nodes Nodes
-	err = xml.Unmarshal(body, &nodes)
+	var xmlnodes XMLNodes
+	err = xml.Unmarshal(body, &xmlnodes)
 	if err != nil {
 		log.Println("Unmarshal error")
 		log.Println(err)
 	}
-	return nodes
-}
-
-func nodesToSchedulables(nodes Nodes) []presentation {
-	var p []presentation
-	for _, n := range nodes.all {
-		p = append(p, nodeToPresentation(n))
-	}
-	return p
-}
-
-func nodeToPresentation(n Node) presentation {
-	var p presentation
-	p.name = n.Title
-	p.description = removeHTMLTags(n.ShortAbstract)
-	p.location = n.Room
-	p.startTime = getStartTime(n.Day)
-	p.endTime = getEndTime(n.Day)
-	p.speakers = getSpeakers(n.Speakers)
-	p.audience = "Everyone"
-	p.topic = n.Topic
-	return p
+	return xmlnodes.All
 }
 
 func removeHTMLTags(s string) string {
@@ -72,15 +85,15 @@ func removeHTMLTags(s string) string {
 	return re.ReplaceAllString(s, "")
 }
 
-func getStartTime(ts string) time.Time {
+func extractStartTime(ts string) time.Time {
 	return time.Now()
 }
 
-func getEndTime(ts string) time.Time {
+func extractEndTime(ts string) time.Time {
 	return time.Now()
 }
 
-func getSpeakers(ss string) []string {
+func extractSpeakers(ss string) []string {
 	var s []string
 	return s
 }

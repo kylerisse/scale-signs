@@ -7,24 +7,30 @@ import (
 
 // Server is the main server runtime
 type Server struct {
-	imgPath string
-	sp      *sponsors
-	sch     *schedule
+	sp  *sponsors
+	sch *schedule
 }
 
 // StartServer returns a pointer to a new Server
-func StartServer(imagePath string) {
+func StartServer(imagePath string, xmlURL string, port string) {
 	var s Server
-	s.imgPath = imagePath
-	s.sp = newSponsors(s.imgPath)
+
+	log.Println("starting server")
+	log.Println("opts: port=" + port + " imagePath=" + imagePath)
+	log.Println("opts: xmlURL=" + xmlURL)
+
+	s.sp = newSponsors(imagePath)
+	s.sch = newSchedule(xmlURL)
 
 	// static content routes
 	http.Handle("/", http.FileServer(http.Dir("./client")))
-	http.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir(s.imgPath))))
+	http.Handle("/img/", http.StripPrefix("/img", http.FileServer(http.Dir(imagePath))))
 
 	// api routes
-	http.HandleFunc("/api/sponsors/images", s.sp.handleSponsorImageList)
+	http.HandleFunc("/api/sponsors", s.sp.handleSponsorImageList)
+	http.HandleFunc("/api/schedule", s.sch.handleScheduleAll)
 
 	// listen
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Println("listening on port", port)
+	log.Fatal(http.ListenAndServe(port, nil))
 }

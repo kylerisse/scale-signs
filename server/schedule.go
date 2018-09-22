@@ -1,14 +1,12 @@
 package server
 
 import (
-	"sync"
+	"encoding/json"
+	"net/http"
 	"time"
 )
 
-type schedule struct {
-	all  []presentation
-	lock sync.Mutex
-}
+type schedule []presentation
 
 type event struct {
 	name        string
@@ -27,7 +25,11 @@ type presentation struct {
 
 func newSchedule(url string) *schedule {
 	var sch schedule
-	nodes := fetchXMLNodes(url)
-	sch.all = nodesToSchedulables(nodes)
+	xlp := createXMLParser(url)
+	sch = xlp.toPresentations()
 	return &sch
+}
+
+func (sch *schedule) handleScheduleAll(w http.ResponseWriter, req *http.Request) {
+	json.NewEncoder(w).Encode(sch)
 }

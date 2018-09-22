@@ -5,8 +5,9 @@ import (
 )
 
 func main() {
+	port := ":8080"
 	imagePath := "./images"
-	//signURL := "http://www.socallinuxexpo.org/scale/16x/sign.xml"
-	server.StartServer(imagePath)
+	xmlURL := "http://www.socallinuxexpo.org/scale/16x/sign.xml"
 
+	server.StartServer(imagePath, xmlURL, port)
 }
