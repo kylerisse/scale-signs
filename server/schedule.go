@@ -2,34 +2,42 @@ package server
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"time"
 )
 
-type schedule []presentation
-
-type event struct {
-	name        string
-	description string
-	location    string
-	startTime   time.Time
-	endTime     time.Time
+// Schedule ok
+type Schedule struct {
+	Presentations []Presentation
 }
 
-type presentation struct {
-	event
-	speakers []string
-	audience string
-	topic    string
+// Event ok
+type Event struct {
+	Name        string
+	Description string
+	Location    string
+	StartTime   time.Time
+	EndTime     time.Time
 }
 
-func newSchedule(url string) *schedule {
-	var sch schedule
-	xlp := createXMLParser(url)
-	sch = xlp.toPresentations()
+// Presentation ok
+type Presentation struct {
+	Event
+	Speakers []string
+	Audience string
+	Topic    string
+}
+
+func newSchedule(url string) *Schedule {
+	var sch Schedule
+	xlp := newXMLParser(url)
+	sch.Presentations = xlp.toPresentations()
+	log.Println(sch)
 	return &sch
 }
 
-func (sch *schedule) handleScheduleAll(w http.ResponseWriter, req *http.Request) {
+func (sch *Schedule) handleScheduleAll(w http.ResponseWriter, req *http.Request) {
+	log.Println("handleScheduleAll", req.RemoteAddr, req.Header)
 	json.NewEncoder(w).Encode(sch)
 }

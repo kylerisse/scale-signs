@@ -8,7 +8,7 @@ import (
 // Server is the main server runtime
 type Server struct {
 	sp  *sponsors
-	sch *schedule
+	sch *Schedule
 }
 
 // StartServer returns a pointer to a new Server
@@ -21,6 +21,7 @@ func StartServer(imagePath string, xmlURL string, port string) {
 
 	s.sp = newSponsors(imagePath)
 	s.sch = newSchedule(xmlURL)
+	log.Println(s.sch)
 
 	// static content routes
 	http.Handle("/", http.FileServer(http.Dir("./client")))

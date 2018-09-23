@@ -36,7 +36,7 @@ function sponsorsTick() {
 
     if (sponsorImages.length > 0 && sponsorsLeftTimer >= sponsorsRefreshAt) {
         sponsorsLeftTimer = 0;
-        if (sponsorsLefti + 1 >= sponsorImages.length) {
+        if (sponsorsLefti + 2 >= sponsorImages.length) {
             sponsorsLefti = 0;
         } else {
             sponsorsLefti++;
@@ -46,7 +46,7 @@ function sponsorsTick() {
 
     if (sponsorImages.length > 0 && sponsorsRightTimer >= sponsorsRefreshAt) {
         sponsorsRightTimer = 0;
-        if (sponsorsRighti + 1 >= sponsorImages.length) {
+        if (sponsorsRighti + 2 >= sponsorImages.length) {
             sponsorsRighti = 1;
         } else {
             sponsorsRighti++;

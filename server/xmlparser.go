@@ -9,15 +9,18 @@ import (
 	"time"
 )
 
-type xmlParser []XMLNode
-
-// XMLNodes <nodes> top level document
-type XMLNodes struct {
-	All []XMLNode `xml:"node"`
+type xmlParser struct {
+	url   string
+	nodes []Node
 }
 
-// XMLNode <node> from the upstream XML, pre cleanup
-type XMLNode struct {
+// Nodes <nodes> top level document
+type Nodes struct {
+	Nodes []Node `xml:"node"`
+}
+
+// Node <node> from the upstream XML, pre cleanup
+type Node struct {
 	Title         string `xml:"Title"`
 	Room          string `xml:"Room"`
 	Day           string `xml:"Day"`
@@ -30,54 +33,52 @@ type XMLNode struct {
 	Path          string `xml:"Path"`
 }
 
-func createXMLParser(url string) *xmlParser {
+func newXMLParser(url string) *xmlParser {
 	var xp xmlParser
-	//nodes := fetchXMLNodes(url)
-	//fmt.Println(nodes)
+	xp.url = url
+	xp.nodes = xp.fetchXMLNodes()
 	return &xp
 }
 
-func (xp *xmlParser) toPresentations() []presentation {
-	var ps []presentation
-	/*for i := 0; i < .length; i++ {
-		ps.append(ps, xp[i].toPresentation())
-	}*/
+func (xp *xmlParser) toPresentations() []Presentation {
+	var ps []Presentation
+	for i := 0; i < len(xp.nodes); i++ {
+		ps = append(ps, xp.nodes[i].toPresentation())
+	}
 	return ps
 
 }
 
-func (n *XMLNode) toPresentation() presentation {
-	var p presentation
-	p.name = n.Title
-	p.description = removeHTMLTags(n.ShortAbstract)
-	p.location = n.Room
-	p.startTime = extractStartTime(n.Day)
-	p.endTime = extractEndTime(n.Day)
-	p.speakers = extractSpeakers(n.Speakers)
-	p.audience = "Everyone"
-	p.topic = n.Topic
+func (n *Node) toPresentation() Presentation {
+	var p Presentation
+	p.Name = n.Title
+	p.Description = removeHTMLTags(n.ShortAbstract)
+	p.Location = n.Room
+	p.StartTime = extractStartTime(n.Day)
+	p.EndTime = extractEndTime(n.Day)
+	p.Speakers = extractSpeakers(n.Speakers)
+	p.Audience = "Everyone"
+	p.Topic = n.Topic
 	return p
 }
 
-func fetchXMLNodes(url string) []XMLNode {
-	resp, err := http.Get(url)
+func (xp *xmlParser) fetchXMLNodes() []Node {
+	resp, err := http.Get(xp.url)
 	if err != nil {
-		log.Println("cannot get " + url)
+		log.Println("cannot get " + xp.url)
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
-	//log.Println("fetch", url)
-	//log.Println(resp.Status, resp.Header)
 	if err != nil {
-		log.Println("cannot read XML response body " + url)
+		log.Println("cannot read XML response body " + xp.url)
 	}
-	var xmlnodes XMLNodes
+	var xmlnodes Nodes
 	err = xml.Unmarshal(body, &xmlnodes)
 	if err != nil {
 		log.Println("Unmarshal error")
 		log.Println(err)
 	}
-	return xmlnodes.All
+	return xmlnodes.Nodes
 }
 
 func removeHTMLTags(s string) string {
