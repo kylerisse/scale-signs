@@ -1,45 +1,56 @@
-var sponsorImageList = [];
 var sponsorImages = [];
+var sponsorsLeftTimer = 0;
+var sponsorsLefti = 0;
+var sponsorsRightTimer = 225;
+var sponsorsRighti = 11;
+var sponsorsRefreshAt = 450;
 
-function loadSponsorImages() {
+function initSponsors() {
     loadJSON("/api/sponsors", function(list) {
-        sponsorImageList = list;
-    });
+        addSponsorImages(list);
+    })
 } 
 
-function addSponsorImage(string) {
-    if (sponsorImageList.length != sponsorImages.length) {
-        sponsorImages = [];
-        for (let i = 0; i < sponsorImageList.length; i++) {
-            sponsorImages.push(loadImage("/img/sponsors/" + sponsorImageList[i]));
+function addSponsorImages(list) {
+    if (list.length != sponsorImages.length) {
+        sponsorsImages = [];
+        for (let i = 0; i < list.length; i++) {
+            sponsorImages.push(loadImage("/img/sponsors/" + list[i]));
         }
     }
 }
 
-class sponsorcorners {
-
-    constructor() {
-        var leftImg;
-        var rightImg;
+function sponsorsRender() {
+    if (sponsorImages.length > 5) {
+        l = sponsorsLefti;
+        r = sponsorsRighti;
+        imageMode(CORNER);
+        image(sponsorImages[l], 10, windowHeight - 310);
+        image(sponsorImages[r], windowWidth - 310, windowHeight - 310); 
     }
+}
 
-    render() {
-        if (sponsorImages.length > 1) {
-            imageMode(CORNERS)
-            draw(sponsorImages[this.leftImg], sponsorsImages[this.leftImg].width + 150, windowHeight - sponsorsImage[this.leftImg].height - 150)
-            draw(sponsorImages[this.rightImg], windowWidth - sponsorsImage[this.rightImg].width - 150, windowHeight - sponsorImage[this.rightImg].height)
+function sponsorsTick() {
+    sponsorsLeftTimer++;
+    sponsorsRightTimer++;
+
+    if (sponsorImages.length > 0 && sponsorsLeftTimer >= sponsorsRefreshAt) {
+        sponsorsLeftTimer = 0;
+        if (sponsorsLefti + 1 >= sponsorImages.length) {
+            sponsorsLefti = 0;
+        } else {
+            sponsorsLefti++;
+            sponsorsLefti++;
         }
     }
 
-    update() {
-        if (sponsorImages.length > 2 && timerFifteenSec == 0) {
-            leftImg = rand(sponsorImages.length - 1)
-            rightTmp = rand(sponsorImages.length - 1)
-            while (leftImg == rightTmp) {
-                rightTmp = rand(sponsorImages.length - 1)
-            }
-            rightImg = rightTmp
+    if (sponsorImages.length > 0 && sponsorsRightTimer >= sponsorsRefreshAt) {
+        sponsorsRightTimer = 0;
+        if (sponsorsRighti + 1 >= sponsorImages.length) {
+            sponsorsRighti = 1;
+        } else {
+            sponsorsRighti++;
+            sponsorsRighti++;
         }
     }
-
 }
