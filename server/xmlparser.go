@@ -56,8 +56,8 @@ func (n *Node) toPresentation() Presentation {
 	p.Name = cleanupNewlinesAndSpaces(n.Title)
 	p.Description = extractDescription(n.ShortAbstract)
 	p.Location = cleanupNewlinesAndSpaces(n.Room)
-	p.StartTime = extractStartTime(n.Day)
-	p.EndTime = extractEndTime(n.Day)
+	p.StartTime = extractStartTime(n.Time)
+	p.EndTime = extractEndTime(n.Time)
 	p.Speakers = extractSpeakers(n.Speakers)
 	p.Topic = n.Topic
 	return p
@@ -105,12 +105,22 @@ func extractDescription(s string) string {
 	return cleanupNewlinesAndSpaces(removeHTMLTags(s))
 }
 
-func extractStartTime(ts string) time.Time {
-	return time.Now()
+func extractTimeByIndex(s string, i int) time.Time {
+	rs := strings.Split(s, " ")
+	rt := strings.Split(rs[i], "\"")[1]
+	t, err := time.Parse(time.RFC3339, rt)
+	if err != nil {
+		log.Println("error parsing timestring" + rt)
+	}
+	return t
 }
 
-func extractEndTime(ts string) time.Time {
-	return time.Now()
+func extractStartTime(s string) time.Time {
+	return extractTimeByIndex(s, 5)
+}
+
+func extractEndTime(s string) time.Time {
+	return extractTimeByIndex(s, 11)
 }
 
 func extractSpeakers(speakers string) []string {

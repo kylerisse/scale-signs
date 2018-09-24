@@ -1,6 +1,4 @@
 todo:
-* server parse presentation starttime
-* server parse presentation endtime
 * client class schedule
 * golang linting 
 * js linting
