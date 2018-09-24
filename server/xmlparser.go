@@ -91,7 +91,7 @@ func cleanupNewlinesAndSpaces(s string) string {
 	rs = strings.TrimSuffix(rs, "\n")
 	rs = strings.Replace(rs, "\n", " ", -1)
 	rs = strings.Join(strings.Fields(rs), " ")
-	rs = strings.TrimPrefix(s, " ")
+	rs = strings.TrimPrefix(rs, " ")
 	rs = strings.TrimSuffix(rs, " ")
 	return rs
 }
