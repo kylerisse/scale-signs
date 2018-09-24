@@ -25,7 +25,6 @@ type Event struct {
 type Presentation struct {
 	Event
 	Speakers []string
-	Audience string
 	Topic    string
 }
 
@@ -33,11 +32,12 @@ func newSchedule(url string) *Schedule {
 	var sch Schedule
 	xlp := newXMLParser(url)
 	sch.Presentations = xlp.toPresentations()
-	log.Println(sch)
 	return &sch
 }
 
 func (sch *Schedule) handleScheduleAll(w http.ResponseWriter, req *http.Request) {
 	log.Println("handleScheduleAll", req.RemoteAddr, req.Header)
-	json.NewEncoder(w).Encode(sch)
+	enc := json.NewEncoder(w)
+	enc.SetEscapeHTML(false)
+	enc.Encode(sch)
 }

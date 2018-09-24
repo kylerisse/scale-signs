@@ -21,7 +21,6 @@ func StartServer(imagePath string, xmlURL string, port string) {
 
 	s.sp = newSponsors(imagePath)
 	s.sch = newSchedule(xmlURL)
-	log.Println(s.sch)
 
 	// static content routes
 	http.Handle("/", http.FileServer(http.Dir("./client")))

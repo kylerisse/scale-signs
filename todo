@@ -1,0 +1,27 @@
+todo:
+* server parse presentation starttime
+* server parse presentation endtime
+* server parse presentation speakers (strings only, pics future)
+* client class schedule
+* golang linting 
+* js linting
+* makefile make lint
+* design doc
+* design diagram
+* contributing doc
+* update readme doc
+* server unit tests sponsors
+* server unit tests xmlparser
+* server unit tests schedule
+* server unit tests server(type)
+* makefile make test 
+* client class actor ([]renderables, pos, vec, vel, dest)
+* client class imagepanel
+* client class presentationpanel
+* client class adpanel
+* client class director
+* client class scene (render, tick, refresh)
+* client class scene legacyschedule
+* client class scene thanksponsors
+* client class scene modernschedule
+* client unit tests

@@ -2,10 +2,12 @@ package server
 
 import (
 	"encoding/xml"
+	"html"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"regexp"
+	"strings"
 	"time"
 )
 
@@ -51,13 +53,12 @@ func (xp *xmlParser) toPresentations() []Presentation {
 
 func (n *Node) toPresentation() Presentation {
 	var p Presentation
-	p.Name = n.Title
-	p.Description = removeHTMLTags(n.ShortAbstract)
-	p.Location = n.Room
+	p.Name = cleanupNewlinesAndSpaces(n.Title)
+	p.Description = extractDescription(n.ShortAbstract)
+	p.Location = cleanupNewlinesAndSpaces(n.Room)
 	p.StartTime = extractStartTime(n.Day)
 	p.EndTime = extractEndTime(n.Day)
 	p.Speakers = extractSpeakers(n.Speakers)
-	p.Audience = "Everyone"
 	p.Topic = n.Topic
 	return p
 }
@@ -81,9 +82,25 @@ func (xp *xmlParser) fetchXMLNodes() []Node {
 	return xmlnodes.Nodes
 }
 
+func unescapeHTML(s string) string {
+	return html.UnescapeString(s)
+}
+
+func cleanupNewlinesAndSpaces(s string) string {
+	rs := strings.TrimSuffix(s, "\n")
+	rs = strings.Replace(rs, "\n", " ", -1)
+	rs = strings.Join(strings.Fields(rs), " ")
+	rs = strings.TrimSuffix(rs, " ")
+	return rs
+}
+
 func removeHTMLTags(s string) string {
 	re := regexp.MustCompile(`<[^>]*>`)
 	return re.ReplaceAllString(s, "")
+}
+
+func extractDescription(s string) string {
+	return cleanupNewlinesAndSpaces(removeHTMLTags(s))
 }
 
 func extractStartTime(ts string) time.Time {
