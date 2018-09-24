@@ -1,7 +1,6 @@
 todo:
 * server parse presentation starttime
 * server parse presentation endtime
-* server parse presentation speakers (strings only, pics future)
 * client class schedule
 * golang linting 
 * js linting

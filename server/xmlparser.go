@@ -87,9 +87,11 @@ func unescapeHTML(s string) string {
 }
 
 func cleanupNewlinesAndSpaces(s string) string {
-	rs := strings.TrimSuffix(s, "\n")
+	rs := strings.TrimPrefix(s, "\n")
+	rs = strings.TrimSuffix(rs, "\n")
 	rs = strings.Replace(rs, "\n", " ", -1)
 	rs = strings.Join(strings.Fields(rs), " ")
+	rs = strings.TrimPrefix(s, " ")
 	rs = strings.TrimSuffix(rs, " ")
 	return rs
 }
@@ -111,7 +113,10 @@ func extractEndTime(ts string) time.Time {
 	return time.Now()
 }
 
-func extractSpeakers(ss string) []string {
-	var s []string
-	return s
+func extractSpeakers(speakers string) []string {
+	var rs []string
+	for _, s := range strings.Split(speakers, ",") {
+		rs = append(rs, cleanupNewlinesAndSpaces(s))
+	}
+	return rs
 }
