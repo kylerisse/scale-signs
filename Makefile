@@ -22,7 +22,7 @@ build: test clean releases resources
 .PHONY: test
 test: lint
 	# make: test
-	go test -v ./...
+	go test --race -v ./...
 
 .PHONY: lint
 lint: $(GOMETALINTER)
