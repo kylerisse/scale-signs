@@ -1,2 +1,8 @@
+# osx user
 .DS_Store
+
+# make
+out
+*.tar.gz
 scale-signs
+signs

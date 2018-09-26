@@ -39,5 +39,8 @@ func (sch *Schedule) handleScheduleAll(w http.ResponseWriter, req *http.Request)
 	log.Println("handleScheduleAll", req.RemoteAddr, req.Header)
 	enc := json.NewEncoder(w)
 	enc.SetEscapeHTML(false)
-	enc.Encode(sch)
+	err := enc.Encode(sch)
+	if err != nil {
+		log.Println("handleScheduleAll cannot encode schedule")
+	}
 }

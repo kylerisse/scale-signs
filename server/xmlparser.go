@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/xml"
-	"html"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -68,7 +67,12 @@ func (xp *xmlParser) fetchXMLNodes() []Node {
 	if err != nil {
 		log.Println("cannot get " + xp.url)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		err = resp.Body.Close()
+		if err != nil {
+			log.Println("unable to close response body while fetching XML")
+		}
+	}()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Println("cannot read XML response body " + xp.url)
@@ -80,10 +84,6 @@ func (xp *xmlParser) fetchXMLNodes() []Node {
 		log.Println(err)
 	}
 	return xmlnodes.Nodes
-}
-
-func unescapeHTML(s string) string {
-	return html.UnescapeString(s)
 }
 
 func cleanupNewlinesAndSpaces(s string) string {

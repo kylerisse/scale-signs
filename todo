@@ -1,8 +1,6 @@
 todo:
 * client class schedule
-* golang linting 
 * js linting
-* makefile make lint
 * design doc
 * design diagram
 * contributing doc
@@ -11,7 +9,6 @@ todo:
 * server unit tests xmlparser
 * server unit tests schedule
 * server unit tests server(type)
-* makefile make test 
 * client class actor ([]renderables, pos, vec, vel, dest)
 * client class imagepanel
 * client class presentationpanel
@@ -22,3 +19,5 @@ todo:
 * client class scene thanksponsors
 * client class scene modernschedule
 * client unit tests
+* create builder docker container, fix makefile in linux
+* config file for overriding listenon, xmlurl

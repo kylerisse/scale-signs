@@ -12,11 +12,11 @@ type Server struct {
 }
 
 // StartServer returns a pointer to a new Server
-func StartServer(imagePath string, xmlURL string, port string) {
+func StartServer(imagePath string, xmlURL string, listenon string) {
 	var s Server
 
 	log.Println("starting server")
-	log.Println("opts: port=" + port + " imagePath=" + imagePath)
+	log.Println("opts: listenon=" + listenon + " imagePath=" + imagePath)
 	log.Println("opts: xmlURL=" + xmlURL)
 
 	s.sp = newSponsors(imagePath)
@@ -31,6 +31,6 @@ func StartServer(imagePath string, xmlURL string, port string) {
 	http.HandleFunc("/api/schedule", s.sch.handleScheduleAll)
 
 	// listen
-	log.Println("listening on port", port)
-	log.Fatal(http.ListenAndServe(port, nil))
+	log.Printf("listening on %s", listenon)
+	log.Fatal(http.ListenAndServe(listenon, nil))
 }

@@ -25,5 +25,8 @@ func newSponsors(imagePath string) *sponsors {
 
 func (s *sponsors) handleSponsorImageList(w http.ResponseWriter, req *http.Request) {
 	log.Println("handleSponsorImageList", req.RemoteAddr, req.Header)
-	json.NewEncoder(w).Encode(s)
+	err := json.NewEncoder(w).Encode(s)
+	if err != nil {
+		log.Println("handleSponsorImageList unable to encode sponsors")
+	}
 }
