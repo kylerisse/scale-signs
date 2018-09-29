@@ -12,9 +12,11 @@ function setup () {
 
   imgLogo = loadImage('/img/logo-17x.png')
   imgWifi = loadImage('/img/wifi.png')
-  imgMap = loadImage('/img/convention-center-map.png')
+  // imgMap = loadImage('/img/convention-center-map.png')
 
   initSponsors()
+
+  sp = new sponsorpanel()
 
   clientState = 'READY'
 }
@@ -22,26 +24,27 @@ function setup () {
 function draw () {
   update()
   if (clientState === 'READY') {
-    //background(223, 202, 150)
+    // background(223, 202, 150)
     background(255)
-    sponsorsRender()
+    // sponsorsRender()
+    sp.render()
     drawHeader()
   }
 }
 
 function windowResized () {
   resizeCanvas(windowWidth, windowHeight)
-  centerCanvas()
 }
 
 function update () {
-  sponsorsTick()
+  // sponsorsTick()
+  sp.tick()
 }
 
 function drawHeader () {
   fill(255)
   stroke(255)
-  //rect(-5, -5, windowWidth, 190)
+  // rect(-5, -5, windowWidth, 190)
   imageMode(CENTER)
   image(imgWifi, windowWidth - 200, 100)
   image(imgLogo, 190, 100)

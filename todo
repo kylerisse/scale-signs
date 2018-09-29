@@ -9,8 +9,6 @@ todo:
 * server unit tests xmlparser
 * server unit tests schedule
 * server unit tests server(type)
-* client class actor ([]renderables, pos, vec, vel, dest)
-* client class imagepanel
 * client class presentationpanel
 * client class adpanel
 * client class director

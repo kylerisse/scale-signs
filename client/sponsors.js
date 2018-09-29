@@ -4,6 +4,7 @@ var sponsorsLefti = 0
 var sponsorsRightTimer = 225
 var sponsorsRighti = 11
 var sponsorsRefreshAt = 450
+var sponsorsReady = false
 
 function initSponsors () {
   loadJSON('/api/sponsors', function (list) {
@@ -13,10 +14,12 @@ function initSponsors () {
 
 function addSponsorImages (list) {
   if (list.length !== sponsorImages.length) {
+    sponsorsReady = false
     sponsorsImages = []
     for (let i = 0; i < list.length; i++) {
       sponsorImages.push(loadImage('/img/sponsors/' + list[i]))
     }
+    sponsorsReady = true
   }
 }
 
