@@ -5,17 +5,12 @@ todo:
 * design diagram
 * contributing doc
 * update readme doc
+* server twitter feed
 * server unit tests sponsors
 * server unit tests xmlparser
 * server unit tests schedule
 * server unit tests server(type)
 * client class presentationpanel
-* client class adpanel
-* client class director
-* client class scene (render, tick, refresh)
-* client class scene legacyschedule
-* client class scene thanksponsors
-* client class scene modernschedule
 * client unit tests
 * create builder docker container, fix makefile in linux
 * config file for overriding listenon, xmlurl

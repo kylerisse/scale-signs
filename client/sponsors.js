@@ -1,9 +1,4 @@
 var sponsorImages = []
-var sponsorsLeftTimer = 0
-var sponsorsLefti = 0
-var sponsorsRightTimer = 225
-var sponsorsRighti = 11
-var sponsorsRefreshAt = 450
 var sponsorsReady = false
 
 function initSponsors () {
@@ -23,38 +18,73 @@ function addSponsorImages (list) {
   }
 }
 
-function sponsorsRender () {
-  if (sponsorImages.length > 5) {
-    var l, r
-    l = sponsorsLefti
-    r = sponsorsRighti
-    imageMode(CORNER)
-    image(sponsorImages[l], 10, windowHeight - 310)
-    image(sponsorImages[r], windowWidth - 310, windowHeight - 310)
+class SponsorPanel {
+  constructor () {
+    this.imgList = []
+    this.leftPos = createVector(10, windowHeight - 310)
+    this.rightPos = createVector(windowWidth - 310, windowHeight - 310)
+    this.hidePos = createVector(-600, -600)
+    this.leftIndex = int(random(0, this.imgList.length))
+    this.rightIndex = int(random(0, this.imgList.length))
+    this.maxTimer = 20
+    this.timer = this.maxTimer
+    this.panelReady = false
   }
-}
 
-function sponsorsTick () {
-  sponsorsLeftTimer++
-  sponsorsRightTimer++
+  isReady () {
+    return this.panelReady
+  }
 
-  if (sponsorImages.length > 0 && sponsorsLeftTimer >= sponsorsRefreshAt) {
-    sponsorsLeftTimer = 0
-    if (sponsorsLefti + 2 >= sponsorImages.length) {
-      sponsorsLefti = 0
-    } else {
-      sponsorsLefti++
-      sponsorsLefti++
+  setLeftPos (v) {
+    this.leftPos = v
+  }
+
+  setRightPos (v) {
+    this.rightPos = v
+  }
+
+  tick () {
+    if (this.panelReady) {
+      this.timer++
+      if (this.timer >= this.maxTimer) {
+        this.timer = 0
+        this.imgList[this.leftIndex].setPosVec(this.hidePos)
+        this.leftIndex = int(random(0, this.imgList.length))
+        while (this.leftIndex === this.rightIndex) {
+          this.leftIndex = int(random(0, this.imgList.length))
+        }
+        this.imgList[this.leftIndex].setPosVec(this.leftPos)
+      }
+      if (this.timer === this.maxTimer / 2) {
+        this.imgList[this.rightIndex].setPosVec(this.hidePos)
+        this.rightIndex = int(random(0, this.imgList.length))
+        while (this.rightIndex === this.leftIndex) {
+          this.rightIndex = int(random(0, this.imgList.length))
+        }
+        this.imgList[this.rightIndex].setPosVec(this.rightPos)
+      }
+    }
+    if (sponsorsReady && !this.panelReady) {
+      this.populateImgList()
     }
   }
 
-  if (sponsorImages.length > 0 && sponsorsRightTimer >= sponsorsRefreshAt) {
-    sponsorsRightTimer = 0
-    if (sponsorsRighti + 2 >= sponsorImages.length) {
-      sponsorsRighti = 1
-    } else {
-      sponsorsRighti++
-      sponsorsRighti++
+  render () {
+    if (sponsorsReady && this.panelReady) {
+      imageMode(CORNER)
+      this.imgList[this.leftIndex].render()
+      this.imgList[this.rightIndex].render()
+    }
+  }
+
+  populateImgList () {
+    if (this.imgList.length !== sponsorImages.length) {
+      this.panelReady = false
+      this.imgList = []
+      for (let i = 0; i < sponsorImages.length; i++) {
+        this.imgList.push(new Img(this.hidePos, sponsorImages[i]))
+      }
+      this.panelReady = true
     }
   }
 }
