@@ -1,16 +1,22 @@
+/* global Img
+   loadJSON loadImage createVector int random
+   windowWidth windowHeight imageMode CORNER
+*/
+
 var sponsorImages = []
 var sponsorsReady = false
 
-function initSponsors () {
-  loadJSON('/api/sponsors', function (list) {
+/* exported initSponsors */
+function initSponsors() {
+  loadJSON('/api/sponsors', function(list) {
     addSponsorImages(list)
   })
 }
 
-function addSponsorImages (list) {
+function addSponsorImages(list) {
   if (list.length !== sponsorImages.length) {
     sponsorsReady = false
-    sponsorsImages = []
+    sponsorImages = []
     for (let i = 0; i < list.length; i++) {
       sponsorImages.push(loadImage('/img/sponsors/' + list[i]))
     }
@@ -18,8 +24,9 @@ function addSponsorImages (list) {
   }
 }
 
+/* exported SponsorPanel */
 class SponsorPanel {
-  constructor () {
+  constructor() {
     this.imgList = []
     this.leftPos = createVector(10, windowHeight - 310)
     this.rightPos = createVector(windowWidth - 310, windowHeight - 310)
@@ -31,19 +38,19 @@ class SponsorPanel {
     this.panelReady = false
   }
 
-  isReady () {
+  isReady() {
     return this.panelReady
   }
 
-  setLeftPos (v) {
+  setLeftPos(v) {
     this.leftPos = v
   }
 
-  setRightPos (v) {
+  setRightPos(v) {
     this.rightPos = v
   }
 
-  tick () {
+  tick() {
     if (this.panelReady) {
       this.timer++
       if (this.timer >= this.maxTimer) {
@@ -69,7 +76,7 @@ class SponsorPanel {
     }
   }
 
-  render () {
+  render() {
     if (sponsorsReady && this.panelReady) {
       imageMode(CORNER)
       this.imgList[this.leftIndex].render()
@@ -77,7 +84,7 @@ class SponsorPanel {
     }
   }
 
-  populateImgList () {
+  populateImgList() {
     if (this.imgList.length !== sponsorImages.length) {
       this.panelReady = false
       this.imgList = []

@@ -1,9 +1,9 @@
 todo:
 * client class schedule
-* js linting
 * design doc
 * design diagram
 * contributing doc
+* style guide
 * update readme doc
 * server twitter feed
 * server unit tests sponsors
@@ -11,6 +11,11 @@ todo:
 * server unit tests schedule
 * server unit tests server(type)
 * client class presentationpanel
+* client class twitterpanel
 * client unit tests
-* create builder docker container, fix makefile in linux
+* create builder docker container
+* fix makefile in linux
+* add freebsd build
 * config file for overriding listenon, xmlurl
+* server updater [schedule & twitter]
+* client updater [schedule, sponsors, & twitter]

@@ -7,12 +7,12 @@ import (
 	"time"
 )
 
-// Schedule ok
+// Schedule contains all presentations and events
 type Schedule struct {
 	Presentations []Presentation
 }
 
-// Event ok
+// Event is basic scheduling primitive
 type Event struct {
 	Name        string
 	Description string
@@ -21,7 +21,7 @@ type Event struct {
 	EndTime     time.Time
 }
 
-// Presentation ok
+// Presentation is an extension of event with speakers and a topic
 type Presentation struct {
 	Event
 	Speakers []string

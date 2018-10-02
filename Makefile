@@ -3,10 +3,11 @@ VERSION := 0.1
 BUILDOS := "darwin" # builder OS [darwin or linux]
 BIN_DIR := $(GOPATH)/bin
 GOMETALINTER := $(BIN_DIR)/gometalinter
+ESLINT := /usr/local/bin/eslint
 
 .PHONY: info
 info:
-	# please use make test or make build
+	# please use make lint, make test, make clean, or make build
 
 # TODO eval broken in linux, build uses os specific parameter for tar [-s darwin / --transform linux]
 .PHONY: build
@@ -22,11 +23,20 @@ build: test clean releases resources
 .PHONY: test
 test: lint
 	# make: test
-	go test --race -v ./...
+	go test --race -v ./server/...
 
 .PHONY: lint
-lint: $(GOMETALINTER)
-	# make: lint
+lint: lint-js lint-go
+
+.PHONY: lint-js
+lint-js: $(ESLINT)
+	eslint client/*.js
+
+$(ESLINT):
+	npm install -g eslint prettier eslint-plugin-prettier eslint-config-prettier
+
+PHONY: lint-go
+lint-go: $(GOMETALINTER)
 	gometalinter ./...
 
 $(GOMETALINTER):
@@ -35,7 +45,7 @@ $(GOMETALINTER):
 
 .PHONY: releases
 releases: test
-	# make: release
+	# make: releases
 	mkdir -p out
 	GOOS=linux GOARCH=amd64 go build -o out/$(BINARY)-v$(VERSION)-linux-amd64
 	GOOS=darwin GOARCH=amd64 go build -o out/$(BINARY)-v$(VERSION)-darwin-amd64
@@ -44,17 +54,17 @@ releases: test
 resources:
 	# make: resources
 	mkdir -p out
-	cp -r client out/client
-	cp -r images out/images
-	cp -r LICENSE.md out/
+	cp -rv client out/client
+	cp -rv images out/images
+	cp -v LICENSE.md out/
 
 .PHONY: clean
 clean:
 	# make: clean
+	find ./ -name .DS_Store -delete
 	rm -rf out
 
 .PHONY: mrproper
-mrproper:
+mrproper: clean
 	# make: mrproper
-	rm -rf out
 	rm -f $(BINARY)-v*.tar.gz
