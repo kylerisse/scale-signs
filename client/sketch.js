@@ -1,7 +1,7 @@
-/* global sp lp SponsorPanel LogoPanel
-   createCanvas initSponsors background resizeCanvas
+/* global sp lp sch SponsorPanel LogoPanel SchedulePanel initSponsors 
+   initSchedule
+   createCanvas background resizeCanvas noCursor
    windowWidth windowHeight createVector frameRate
-   noCursor
 */
 
 /* exported setup */
@@ -10,10 +10,12 @@ function setup() {
   noCursor()
   createCanvas(windowWidth, windowHeight)
   initSponsors()
+  initSchedule()
 
-  // .eslintrc: "no-global-assign": ["error", {"exceptions": ["sp", "lp"]}]
+  // .eslintrc: "no-global-assign": ["error", {"exceptions": ["sp", "lp", "scp"]}]
   sp = new SponsorPanel()
   lp = new LogoPanel()
+  sch = new SchedulePanel()
 }
 
 /* exported draw */
@@ -36,4 +38,5 @@ function windowResized() {
 /* exported update */
 function update() {
   sp.tick()
+  sch.tick()
 }

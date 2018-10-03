@@ -39,6 +39,6 @@
     "no-unused-vars": ["error", { "args": "none" }],
     "no-empty": ["error", { "allowEmptyCatch": true }],
     "no-console": "off",
-    "no-global-assign": ["error", {"exceptions": ["sp", "lp"]}]
+    "no-global-assign": ["error", {"exceptions": ["sp", "lp", "sch"]}]
   }
 }

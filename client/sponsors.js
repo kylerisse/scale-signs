@@ -8,9 +8,7 @@ var sponsorsReady = false
 
 /* exported initSponsors */
 function initSponsors() {
-  loadJSON('/api/sponsors', function(list) {
-    addSponsorImages(list)
-  })
+  loadJSON('/api/sponsors', addSponsorImages)
 }
 
 function addSponsorImages(list) {
