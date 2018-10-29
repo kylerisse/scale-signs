@@ -1,4 +1,7 @@
 todo:
+* server support more complicated sponsors; room, track, presentation based
+* server map sponsors to schedule
+* client add room specific views
 * client class schedule
 * design doc
 * design diagram
