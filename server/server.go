@@ -9,6 +9,7 @@ import (
 type Server struct {
 	sp  *sponsors
 	sch *Schedule
+	rms *rooms
 }
 
 // StartServer returns a pointer to a new Server
@@ -21,6 +22,7 @@ func StartServer(imagePath string, xmlURL string, listenon string) {
 
 	s.sp = newSponsors(imagePath)
 	s.sch = newSchedule(xmlURL)
+	s.rms = newRooms(s.sch)
 
 	// static content routes
 	http.Handle("/", http.FileServer(http.Dir("./client")))
