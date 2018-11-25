@@ -57,6 +57,7 @@ resources:
 	cp -rv client out/client
 	cp -rv images out/images
 	cp -v LICENSE.md out/
+	cp -v config.json out/
 
 .PHONY: clean
 clean:
