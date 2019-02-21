@@ -1,5 +1,5 @@
 {
     "listenon": "127.0.0.1:8080",
     "imagePath": "./images",
-    "xmlURL": "http://www.socallinuxexpo.org/scale/16x/sign.xml"
+    "xmlURL": "http://www.socallinuxexpo.org/scale/17x/sign.xml"
 }
